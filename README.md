@@ -1,9 +1,6 @@
 # 🚀 Android Baseapp Template (Kotlin)
 
-![Android](https://img.shields.io/badge/Android-34-green)
-![Kotlin](https://img.shields.io/badge/Kotlin-1.9-blue)
-![Gradle](https://img.shields.io/badge/Gradle-Build-orange)
-![Status](https://img.shields.io/badge/Status-Ready-success)
+   
 
 Molde profissional para desenvolvimento Android no VS Code, sem necessidade de abrir o Android Studio no dia a dia.
 
@@ -94,19 +91,81 @@ sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
 
 ## 🏗️ Passo 1: Configuração Inicial
 
-### local.properties
-
-```properties
-sdk.dir=C\\:\\Users\\SEU_USUARIO\\AppData\\Local\\Android\\Sdk
-```
+### Antes de rodar qualquer build, o Android SDK precisa ser reconhecido pelo sistema e pelo VS Code. Isso é feito configurando a variável `ANDROID_HOME`.
 
 ---
 
-### Variáveis
+### 1️⃣ Criar `local.properties`
 
-```powershell
-[System.Environment]::SetEnvironmentVariable("ANDROID_HOME", "C:\\Users\\SEU_USUARIO\\AppData\\Local\\Android\\Sdk", "User")
+Na raiz do projeto, crie o arquivo `local.properties`:
+
 ```
+sdk.dir=C\\:\\Users\\SEU_USUARIO\\AppData\\Local\\Android\\Sdk
+```
+
+⚠️ Não subir este arquivo para o Git.
+
+---
+
+### 2️⃣ Configurar a variável ANDROID_HOME
+
+Existem **três maneiras** de fazer isso no Windows:
+
+#### 🔹 Método 1: Interface gráfica (recomendado para iniciantes)
+
+1. Pressione **Windows + S** e digite **“variáveis de ambiente”**
+2. Clique em **“Editar variáveis de ambiente do sistema”**
+3. Em **Variáveis do Usuário → Novo…**, preencha:
+
+   * Nome: `ANDROID_HOME`
+   * Valor: `C:\Users\SEU_USUARIO\AppData\Local\Android\Sdk`
+4. Clique em **OK** e reinicie o terminal/VS Code.
+
+---
+
+#### 🔹 Método 2: PowerShell permanente (para builds confiáveis)
+
+```
+[System.Environment]::SetEnvironmentVariable(
+    "ANDROID_HOME",
+    "C:\Users\SEU_USUARIO\AppData\Local\Android\Sdk",
+    "User"
+)
+```
+
+* `"User"` define que a variável é para o usuário atual.
+* Reinicie o terminal/VS Code após aplicar.
+
+---
+
+#### 🔹 Método 3: Sessão temporária (teste rápido)
+
+No **PowerShell**:
+
+```
+$env:ANDROID_HOME="C:\Users\SEU_USUARIO\AppData\Local\Android\Sdk"
+```
+
+Ou no **CMD**:
+
+```
+set ANDROID_HOME=C:\Users\SEU_USUARIO\AppData\Local\Android\Sdk
+```
+
+⚠️ Vale lembrar: **só dura enquanto o terminal estiver aberto**.
+
+---
+
+### 3️⃣ Por que isso é importante
+
+* O `adb` e o Gradle usam **ANDROID_HOME** para localizar o SDK.
+* Sem isso, você verá erros como:
+
+  * `adb: command not found`
+  * `SDK not found`
+  * `Unresolved reference: R`
+
+💡 **Dica:** Depois de configurar, sempre **reinicie o terminal ou o VS Code**.
 
 ---
 
