@@ -1,7 +1,5 @@
 # 🚀 Android Baseapp Template (Kotlin)
 
-   
-
 Molde profissional para desenvolvimento Android no VS Code, sem necessidade de abrir o Android Studio no dia a dia.
 
 ---
@@ -9,7 +7,8 @@ Molde profissional para desenvolvimento Android no VS Code, sem necessidade de a
 ## ⚡ TL;DR (Execução rápida)
 
 ```bash
-# 1. Configurar local.properties
+# Terminal: VS Code (PowerShell)
+# 1. Configurar local.properties + ANDROID_HOME
 # 2. Iniciar emulador
 # 3. Build
 ./gradlew clean installDebug
@@ -33,9 +32,41 @@ Opcional:
 
 ---
 
-## 🧠 Como funciona este template
+## 🧩 Extensões recomendadas (VS Code)
 
-Este projeto usa:
+Estas são as extensões **essenciais para o funcionamento do projeto**:
+
+### 🔹 Obrigatórias
+
+* **Kotlin (fwcd.kotlin)**
+  Essencial para trabalhar com arquivos `.kt` (ex: MainActivity.kt)
+
+* **Extension Pack for Java (vscjava.vscode-java-pack)**
+  Inclui suporte completo ao Java (necessário porque o Android usa a base Java)
+
+* **Language Support for Java (Red Hat)**
+  Responsável por análise de código, erros e autocomplete
+
+* **Gradle for Java (vscjava.vscode-gradle)**
+  Permite rodar builds (`gradlew`) e entender o `build.gradle.kts`
+
+---
+
+### 📱 Emulador (muito importante)
+
+* **Android iOS Emulator (adpyke.vscode-android-ios-emulator)**
+  Usado para listar, iniciar e gerenciar emuladores diretamente no VS Code
+
+---
+
+### 💡 Observação importante
+
+* Após instalar as extensões → **reinicie o VS Code**
+* Se algo não funcionar → geralmente é problema de extensão ou PATH
+
+---
+
+## 🧠 Como funciona este template
 
 * Kotlin como linguagem principal
 * Gradle para build
@@ -84,110 +115,164 @@ C:\Users\SEU_USUARIO\AppData\Local\Android\Sdk
 ### 🟡 Opção 2 (Avançado)
 
 ```powershell
+# Terminal: PowerShell (pode ser no VS Code)
 sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+```
+
+⚠️ Se `sdkmanager` não for reconhecido, execute pelo caminho completo:
+
+```powershell
+C:\Users\SEU_USUARIO\AppData\Local\Android\Sdk\cmdline-tools\latest\bin\sdkmanager.bat
 ```
 
 ---
 
 ## 🏗️ Passo 1: Configuração Inicial
 
-### Antes de rodar qualquer build, o Android SDK precisa ser reconhecido pelo sistema e pelo VS Code. Isso é feito configurando a variável `ANDROID_HOME`.
-
----
-
 ### 1️⃣ Criar `local.properties`
 
-Na raiz do projeto, crie o arquivo `local.properties`:
+Na raiz do projeto:
 
 ```
 sdk.dir=C\\:\\Users\\SEU_USUARIO\\AppData\\Local\\Android\\Sdk
 ```
 
 ⚠️ Não subir este arquivo para o Git.
+ Para isso no arquivo .gitignore inserir local.properties
 
 ---
 
-### 2️⃣ Configurar a variável ANDROID_HOME
+### 2️⃣ Configurar ANDROID_HOME
 
-Existem **três maneiras** de fazer isso no Windows:
+#### Método recomendado (Interface gráfica)
 
-#### 🔹 Método 1: Interface gráfica (recomendado para iniciantes)
+* Windows + S → “variáveis de ambiente”
+* Variáveis do usuário → Novo
 
-1. Pressione **Windows + S** e digite **“variáveis de ambiente”**
-2. Clique em **“Editar variáveis de ambiente do sistema”**
-3. Em **Variáveis do Usuário → Novo…**, preencha:
+  * Nome: ANDROID_HOME
+  * Valor: C:\Users\SEU_USUARIO\AppData\Local\Android\Sdk
 
-   * Nome: `ANDROID_HOME`
-   * Valor: `C:\Users\SEU_USUARIO\AppData\Local\Android\Sdk`
-4. Clique em **OK** e reinicie o terminal/VS Code.
+Reinicie o VS Code.
 
 ---
 
-#### 🔹 Método 2: PowerShell permanente (para builds confiáveis)
+## 📱 Passo 2: Emulador 
 
-```
-[System.Environment]::SetEnvironmentVariable(
-    "ANDROID_HOME",
-    "C:\Users\SEU_USUARIO\AppData\Local\Android\Sdk",
-    "User"
-)
-```
+### ▶️ Opção A: Usar emulador já existente (RECOMENDADO)
 
-* `"User"` define que a variável é para o usuário atual.
-* Reinicie o terminal/VS Code após aplicar.
+
+1. Ctrl + Shift + P (no VS Code )
+2. Digite: Emulator
+3. Clique: Run Emulator
+4. Escolha dispositivo
 
 ---
 
-#### 🔹 Método 3: Sessão temporária (teste rápido)
+### ⚠️ Problema comum: erro de PATH
 
-No **PowerShell**:
+Se aparecer erro tipo:
 
-```
-$env:ANDROID_HOME="C:\Users\SEU_USUARIO\AppData\Local\Android\Sdk"
-```
+* `emulator not recognized`
+* `sdkmanager not recognized`
+* `avdmanager not recognized`
 
-Ou no **CMD**:
-
-```
-set ANDROID_HOME=C:\Users\SEU_USUARIO\AppData\Local\Android\Sdk
-```
-
-⚠️ Vale lembrar: **só dura enquanto o terminal estiver aberto**.
+👉 Significa que o PATH do Android não está configurado.
 
 ---
 
-### 3️⃣ Por que isso é importante
+### ✅ Como corrigir o PATH (OBRIGATÓRIO se deu erro)
 
-* O `adb` e o Gradle usam **ANDROID_HOME** para localizar o SDK.
-* Sem isso, você verá erros como:
+1. Windows + S → “variáveis de ambiente”
+2. Variáveis do usuário → editar variável **Path**
+3. Adicione:
 
-  * `adb: command not found`
-  * `SDK not found`
-  * `Unresolved reference: R`
+```
+C:\Users\SEU_USUARIO\AppData\Local\Android\Sdk\platform-tools
+C:\Users\SEU_USUARIO\AppData\Local\Android\Sdk\emulator
+C:\Users\SEU_USUARIO\AppData\Local\Android\Sdk\cmdline-tools\latest\bin
+```
 
-💡 **Dica:** Depois de configurar, sempre **reinicie o terminal ou o VS Code**.
+4. Clique OK em tudo
+5. **Reinicie o VS Code**
+
+---
+### ⚠️ Problema comum: cmdline-tools NÃO existe
+
+Se não existir:
+
+```
+C:\Users\SEU_USUARIO\AppData\Local\Android\Sdk\cmdline-tools
+```
+
+👉 Você NÃO tem os **Command-line Tools** instalados.
+
+#### ✅ Solução A (recomendada)
+
+Android Studio → SDK Manager → SDK Tools
+✔️ Android SDK Command-line Tools (latest)
 
 ---
 
-## 📱 Passo 2: Emulador
+#### 🟡 Solução B (sem Android Studio)
 
-### ▶️ Rodar
+1. Baixe em:
+   [https://developer.android.com/studio#command-tools](https://developer.android.com/studio#command-tools)
 
-* Ctrl + Shift + P
-* Run Emulator
+2. Extraia em:
+
+```
+C:\Users\SEU_USUARIO\AppData\Local\Android\Sdk\cmdline-tools
+```
+
+3. Ajuste a estrutura (OBRIGATÓRIO):
+
+```
+cmdline-tools/
+   └── latest/
+       └── bin/
+```
 
 ---
 
-### ⚙️ Criar (se necessário)
+### ⚙️ Opção B: Criar emulador do zero
+
+#### 🟧 PowerShell (VS Code)
 
 ```powershell
 sdkmanager "system-images;android-34;google_apis;x86_64"
-./avdmanager create avd -n "Pixel_Base" -k "system-images;android-34;google_apis;x86_64" -device "pixel_3a"
+avdmanager create avd -n Pixel_Base -k "system-images;android-34;google_apis;x86_64" -device "pixel_3a"
+```
+
+---
+
+#### ⬜ CMD (alternativo)
+
+```cmd
+sdkmanager.bat "system-images;android-34;google_apis;x86_64"
+avdmanager.bat create avd -n Pixel_Base -k "system-images;android-34;google_apis;x86_64" -device "pixel_3a"
+```
+
+---
+
+### 🚀 Iniciar emulador manualmente (caso extensão falhe)
+
+#### 🟧 PowerShell
+
+```powershell
+emulator -avd Pixel_Base
+```
+
+#### ⬜ CMD
+
+```cmd
+emulator.exe -avd Pixel_Base
 ```
 
 ---
 
 ## 🚀 Passo 3: Build
+
+👉 Terminal: **VS Code (PowerShell)**
 
 ```powershell
 ./gradlew clean installDebug --no-configuration-cache
@@ -225,52 +310,54 @@ adb shell am start -n com.minha.baseapp/.MainActivity
 
 ## 🛠️ Passo 5: Personalização
 
-## ✏️ Nome do App
+### ✏️ Nome do App
 
-Altere o nome exibido no celular:
-
+```xml
 <string name="app_name">MeuApp</string>
+```
 
-📍 Arquivo: res/values/strings.xml
+📍 res/values/strings.xml
 
-## 🆔 ID do App (applicationId)
+---
 
-Define a identidade única do app (importante para instalação e Play Store):
+### 🆔 ID do App
 
+```kotlin
 applicationId = "com.SEUNOME.appnome"
+```
 
-📍 Arquivo: app/build.gradle.kts
+📍 app/build.gradle.kts
 
-## 💡 Exemplo:
+---
 
-com.maria.calculadora
+### 🔄 Substituição global
 
-com.joao.todoapp
+```
+com.minha.baseapp → com.SEUNOME.appnome
+```
 
-## 🔄 Substituição global (OBRIGATÓRIO)
+Atalho:
 
-Substitua todas as ocorrências do pacote antigo:
+```
+Ctrl + Shift + H
+```
 
-* com.minha.baseapp → com.SEUNOME.appnome
+---
 
-Use o atalho:
+### 📁 Ajustar pastas
 
-* Ctrl + Shift + H
-
-## 📁 Ajustar estrutura de pastas
-
-Depois da substituição, atualize as pastas em:
-
+```
 src/main/java/
+```
 
-Elas devem seguir o mesmo padrão do novo package.
+---
 
 ## ⚠️ Erros comuns
 
-* adb não funciona → SDK errado
+* sdkmanager não funciona → usar caminho completo
+* adb não funciona → SDK não configurado
 * Emulator não aparece → criar AVD
 * Build falha → RESET
-* Código vermelho → RESET
 
 ---
 
@@ -295,9 +382,9 @@ git push origin main
 
 ## 💡 Dicas finais
 
-* Sempre iniciar emulador antes do build
+* Sempre usar terminal do VS Code (PowerShell)
+* Iniciar emulador antes do build
 * Use RESET sem medo
-* Template reutilizável
 
 ---
 
@@ -308,3 +395,4 @@ Este projeto serve como base para:
 * Estudos Android
 * Projetos rápidos
 * Evolução para apps mais complexos
+
