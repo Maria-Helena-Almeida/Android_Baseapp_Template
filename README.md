@@ -225,29 +225,45 @@ adb shell am start -n com.minha.baseapp/.MainActivity
 
 ## 🛠️ Passo 5: Personalização
 
-### Nome
+## ✏️ Nome do App
 
-```xml
+Altere o nome exibido no celular:
+
 <string name="app_name">MeuApp</string>
-```
 
----
+📍 Arquivo: res/values/strings.xml
 
-### ID
+## 🆔 ID do App (applicationId)
 
-```kotlin
-applicationId = "com.minha.app"
-```
+Define a identidade única do app (importante para instalação e Play Store):
 
----
+applicationId = "com.SEUNOME.appnome"
 
-### Substituição
+📍 Arquivo: app/build.gradle.kts
 
-```
-Ctrl + Shift + H
-```
+## 💡 Exemplo:
 
----
+com.maria.calculadora
+
+com.joao.todoapp
+
+## 🔄 Substituição global (OBRIGATÓRIO)
+
+Substitua todas as ocorrências do pacote antigo:
+
+* com.minha.baseapp → com.SEUNOME.appnome
+
+Use o atalho:
+
+* Ctrl + Shift + H
+
+## 📁 Ajustar estrutura de pastas
+
+Depois da substituição, atualize as pastas em:
+
+src/main/java/
+
+Elas devem seguir o mesmo padrão do novo package.
 
 ## ⚠️ Erros comuns
 
